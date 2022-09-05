@@ -1,0 +1,448 @@
+from machine import Pin 
+from utime import sleep_ms, sleep
+s1=Pin (33, Pin.IN)
+s2=Pin (32, Pin.IN)
+s3=Pin (35, Pin.IN)
+s4=Pin (34, Pin.IN)
+s5=Pin (22, Pin.IN)
+s6=Pin (23, Pin.IN)
+
+b1=1
+
+led1 = Pin(2,Pin.OUT)
+led2 = Pin(4,Pin.OUT)
+led3 = Pin(16,Pin.OUT)
+led4 = Pin(17,Pin.OUT)
+#Cambiar el 21 por el 17
+led5 = Pin(18,Pin.OUT)
+led6 = Pin(12,Pin.OUT)
+led7 = Pin(14,Pin.OUT)
+led8 = Pin(27,Pin.OUT)
+led9 = Pin(26,Pin.OUT)
+led10 = Pin(25,Pin.OUT)
+Pines = [led1,led2,led3,led4,led5,led6,led7,led8,led9,led10]
+
+sl=0.05
+while True: 
+  if (s5.value() != 1):
+      sl = sl - 0.005
+      print("Presionado mas rapido")
+      if sl<0.01000001:
+        sl = 0.05
+
+  if (s6.value() != 1):
+    sl = sl + 0.005
+    print("Presionado menos lento")
+    if sl>0.0900001:
+      sl=0.05
+
+  print("El tiempo es de: ",sl," segundos.")
+  sleep(1)
+
+  def verificacion(dato):
+    dato1 = (int (s1.value())*8+int (s2.value())*4+int (s3.value())*2+int (s4.value()))
+    if dato1 != 15 and dato1 != dato:
+      dato = not dato
+    return(dato)
+
+  def Secuencia0(): 
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    verificacion(dato)    
+    sleep(sl)
+    for i in Pines[5:]:
+      for j in range (1):
+        i.value(not i.value())
+    for i in Pines[:5]:
+      for j in range (2):
+        i.value(not i.value())
+        sleep(sl)
+    verificacion(dato)
+    for i in Pines[:5]:
+      for j in range (1):
+        i.value(not i.value())
+    verificacion(dato)    
+    sleep(sl)
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    verificacion(dato)    
+    sleep(sl)
+    for i in Pines[:5]:
+      for j in range (1):
+        i.value(not i.value())
+    for i in reversed(Pines):
+      if i==led5:
+        break
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+    verificacion(dato)    
+    sleep(sl)
+    for i in Pines[5:]:
+      for j in range (1):
+        i.value(not i.value())
+    verificacion(dato)    
+    sleep(sl)
+
+  def Secuencia1():
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    sleep(sl)
+    for i in Pines:
+        for j in range(2):
+          i.value(not i.value())
+          sleep(sl)
+    verificacion(dato)
+
+  def Secuencia2():
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    sleep(sl)
+    for i in Pines:
+      for j in range(1):
+        i.value(1)
+        sleep(sl)
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+        sleep(sl)   
+
+  def Secuencia3():
+    Pines2 = reversed(Pines)
+    PinesF=[]
+    for i in Pines:
+      for j in range(1):
+        i.value(0)     
+    for i,j in zip(Pines,Pines2):
+      if i==led1 or i==led2 or i==led3 or i==led4 or i==led5:
+          PinesF.append(i)
+      if j==led10 or j==led9 or j==led8 or j==led7 or j==led6:
+          PinesF.append(j)
+    for i in PinesF:
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+
+  def Secuencia4():
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    for i in Pines[:5]:
+      for j in range (1):
+        i.value(not i.value())
+    sleep(sl)
+    for i in Pines[:5]:
+      for j in range (1):
+        i.value(not i.value())
+    sleep(sl)
+    for i in Pines[5:]:
+      for j in range (1):
+        i.value(not i.value())
+    sleep(sl)
+    for i in Pines[5:]:
+      for j in range (1):
+        i.value(not i.value())
+    sleep(sl)
+
+  def Secuencia5():
+    Pines2 = reversed(Pines)
+    for i in Pines:
+      for j in range(1):
+        i.value(0)    
+    for i,j in zip(Pines,Pines2):
+      for k in range(2):
+          i.value(not i.value())
+          j.value(not j.value())
+          sleep(sl/2)
+
+  def Secuencia6():
+    for i in Pines:
+      for j in range(1):
+        i.value(0)  
+    Pines2=reversed(Pines) 
+    for i in Pines:
+      if i==led10: 
+        break 
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl) 
+    led10.value(1)
+    for i in Pines:
+      if i==led9:
+        break
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+    led9.value(1)
+    for i in Pines:
+      if i==led8: 
+        break 
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl) 
+    led8.value(1)
+    for i in Pines:
+      if i==led7:
+        break
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+    led7.value(1)
+    for i in Pines:
+      if i==led6: 
+        break 
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl) 
+    led6.value(1)
+    for i in Pines:
+      if i==led5:
+        break
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+    led5.value(1)
+    for i in Pines:
+      if i==led4: 
+        break 
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl) 
+    led4.value(1)
+    for i in Pines:
+      if i==led3:
+        break
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+    led3.value(1)
+    for i in Pines:
+      if i==led2:
+        break
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+    led2.value(1)
+    for i in Pines:
+      if i==led1: 
+        break 
+      for j in range(2):
+        i.value(not i.value())
+        sleep(sl)
+    led1.value(1)
+    for i in Pines2:
+      for j in range(1):
+        i.value(0)
+        sleep(sl)
+    verificacion(dato)
+
+  def Secuencia7():
+    Pines2 = reversed(Pines)
+    for i in Pines:
+      for j in range(1):
+        i.value(0)    
+    sleep(0.1)
+    for i,j in zip(Pines,Pines2):
+      if i==led6:
+        break
+      for k in range(1):
+          i.value(not i.value())
+          j.value(not j.value())
+          sleep(sl)
+
+  def Secuencia8():
+    Pines2=[led2,led3,led4,led5,led6,led7,led8,led9,led10,led1]
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    for i,j in zip(Pines,Pines2):
+      for k in range(2):
+        i.value(not i.value())
+        j.value(not j.value())
+        sleep(sl/2)
+
+  def Secuencia9():
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    Pines2=[led5,led4,led3,led2,led1]
+    Pines3=Pines[5:]
+    for i,j in zip(Pines2,Pines3):
+      for k in range(2):
+        i.value(not i.value())
+        j.value(not j.value())
+        sleep(sl)
+
+  def Secuencia10():
+    sleep(0.5)
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    sleep(0.5)
+    for i in Pines:
+      for j in range(1):
+        i.value(not i.value())
+    sleep(0.5)
+
+  def Secuencia11():
+    Pines2=[]
+    Pines3=[]
+    for i in Pines:
+      for j in range(1):
+        i.value(0)    
+    for i in Pines:
+      if i==led2 or i==led4 or i==led6 or i==led8 or i==led10:
+        Pines2.append(i)
+      if i==led1 or i==led3 or i==led5 or i==led7 or i==led9:
+        Pines3.append(i)
+    for i in Pines2:
+      for j in range(1):
+        i.value(not i.value())
+    sleep(sl*3)
+    for i,j in zip(Pines2,Pines3):
+      for k in range(1):
+        i.value(not i.value())
+        j.value(not j.value())
+    sleep(sl*3)
+
+  def Secuencia12():
+    Pines2=Pines[:5]
+    Pines3=[]
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    sleep(sl)
+    for i in reversed(Pines):
+      if i==led6 or i==led7 or i==led8 or i==led9 or i==led10:
+        Pines3.append(i)
+    for i,j in zip(Pines2,Pines3):
+      for k in range(2):
+        i.value(not i.value())
+        j.value(not j.value())
+        sleep(sl/1.5)
+    sleep(sl)
+    for i in Pines:
+      for j in range(1):
+        i.value(not i.value())
+    sleep(sl)
+    for i in Pines:
+      for j in range(1):
+        i.value(not i.value())
+    sleep(sl*2)
+
+  def Secuencia13():
+    Pines2=Pines[:5]
+    Pines3=[]
+    Pines2R=reversed(Pines2)
+    for i in Pines:
+      for j in range(1):
+        i.value(0)
+    for i in reversed(Pines):
+      if i==led6 or i==led7 or i==led8 or i==led9 or i==led10:
+        Pines3.append(i)
+    Pines3R=reversed(Pines3)
+    for i,j in zip(Pines2,Pines3):
+      for k in range(1):
+        i.value(not i.value())
+        j.value(not j.value())
+        sleep(sl)
+    for i,j in zip(Pines2R,Pines3R):
+      for k in range(1):
+        i.value(not i.value())
+        j.value(not j.value())
+        sleep(sl)
+    
+  def Secuencia14():
+    for i in Pines:
+      for j in range(1):
+        i.value(0) 
+    for i in Pines[:5]:
+      for j in range (1):
+        i.value(not i.value())
+        sleep(sl)
+        for k in Pines[5:]:
+          for l in range (2):
+            k.value(not k.value())
+            sleep(sl)
+    for i in reversed(Pines):
+      for j in range(1):
+        i.value(0) 
+    for i in reversed(Pines[:5]):
+      for j in range (1):
+        i.value(not i.value())
+        sleep(sl)
+        for k in reversed(Pines[5:]):
+          for l in range (2):
+            k.value(not k.value())
+            sleep(sl) 
+            
+  dato= int (s1.value())*8+int (s2.value())*4+int (s3.value())*2+int (s4.value()) 
+  print(dato)   
+  while (dato==0):
+    Secuencia0()
+    dato=verificacion(dato) 
+    
+  while (dato == 1):
+    Secuencia1()
+    dato=verificacion(dato)
+      
+  while (dato == 2):
+    Secuencia2()
+    dato=verificacion(dato)
+
+  while(dato==3):
+    Secuencia3()
+    dato = verificacion(dato)
+
+  while (dato == 4):
+    Secuencia4()
+    dato= verificacion(dato)
+
+  while (dato == 5):
+    Secuencia5()
+    dato = verificacion(dato)
+
+  while(dato == 6):
+    Secuencia6()
+    dato = verificacion(dato)
+
+  while (dato == 7):
+    Secuencia7()
+    dato = verificacion(dato)
+
+  while (dato == 8):
+    Secuencia8()
+    dato=verificacion(dato)
+
+  while (dato == 9):
+    Secuencia9()
+    dato=verificacion(dato)
+
+  while (dato == 10):
+    Secuencia10()
+    dato=verificacion(dato)
+    
+  while (dato == 11):
+    Secuencia11()
+    dato=verificacion(dato)
+
+  while (dato == 12):
+    Secuencia12()
+    dato=verificacion(dato)
+
+  while (dato == 13):
+    Secuencia13()
+    dato=verificacion(dato)
+    
+  while (dato == 14):
+    Secuencia14()
+    dato=verificacion(dato)
+
+  if (dato == 15):
+    led1.value(0),led2.value(0),led3.value(0),led4.value(0),led5.value(0),led6.value(0),led7.value(0),led8.value(0),led9.value(0),led10.value(0)
+
+
